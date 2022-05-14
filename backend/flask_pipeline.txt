@@ -1,0 +1,23 @@
+
+
+# exercise 1. Make a dasic website for the project
+python project.py
+
+# add custom design with the css and run the script
+python template2.py
+
+# run the flask file with the dedug mode on
+python debug.py
+
+# begin with to the data input. First of all, query string
+## run the script in debug mode (AND DON'T CLOSE)
+python postget.py
+## open http://127.0.0.1:5000/query?surname=<YOUR SURNAME> in browser
+
+## try the form input
+## open the login.html file and write down the info
+
+## upload the file
+## http://127.0.0.1:5000/upload
+
+

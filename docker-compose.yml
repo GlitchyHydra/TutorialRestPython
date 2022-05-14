@@ -1,0 +1,59 @@
+#can specify version of docker-compose
+#version: '3.5'
+
+#define your containers inside services
+services:
+#container for postgresql
+  db:
+    container_name: pdb
+    #create this container with this image
+    image: postgres:latest
+    networks:
+     - freelancer-web-network
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: '5690'
+      POSTGRES_DB: name_bd
+    volumes: 
+     - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+  web:
+    container_name: tutorial_flask_backend
+    image: glitchyhydra/sci_pyhon_tutorial_backend
+    build:
+      #context is the path to Dockerfile for container
+      context: .
+      #specify the Dockerfile relative to context path
+      dockerfile: Dockerfile
+    volumes:
+     - .:/user/src/app/
+     - /downloads
+    #for NO restart policy use quotes
+    #because in docker-compose.yml it will be
+    #translated to false 
+    restart: on-failure 
+    #map ports on local machine and container
+    #left is port of local machine and right is for container
+    ports:
+     - "8002:8002"
+     - "8003:8003"
+    environment:
+    #Change to production when not in dev
+     - FLASK_ENV=development 
+     - FLASK_URLS=https://+:8003;http://+:8002
+     #parameters for use in flask app to connect with postgres server
+     - DB_HOST=pdb
+     - DB_DATABASE=freelancer_bd
+     - DB_USER=postgres
+     - DB_PASS=5690
+     - DB_PORT=5432
+     #additional
+     - UPLOAD_FOLDER = "/downloads"
+    depends_on:
+     - db
+    networks:
+     - freelancer-web-network
+    command: ["./wait-for-it.sh", "db:5432", "--", "flask", "app.py"]
+    
+networks:
+  freelancer-web-network:
+    driver: bridge
