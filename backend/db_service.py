@@ -2,9 +2,11 @@ from typing_extensions import Self
 from django import db
 import flask_sqlalchemy
 
+db = flask_sqlalchemy.SQLAlchemy()
+
 class DbService:
 
-    db = flask_sqlalchemy.SQLAlchemy()
+    
     IsRunning = False
 
     '''
@@ -18,13 +20,14 @@ class DbService:
 
     #constructor of class
     def __init__(self, app):
+        global db
         db = flask_sqlalchemy.SQLAlchemy(app)
 
     #TODO define your methods here
     #e.g. def insert_patient(name, contacts)
     #name, contacts is the columns of your table(model)
     def insert_patient(name, contacts):
-        d
+        db.In
 
     #TODO GET ALL PATIENTS FROM DB
     def get_patients():
