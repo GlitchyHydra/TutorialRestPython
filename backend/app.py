@@ -1,6 +1,7 @@
 from http.client import OK
 from flask import Flask,abort,render_template,request,redirect,url_for, jsonify
 import os
+from backend.models.Patient import Patient
 
 import init
 from db_service import DbService
@@ -14,20 +15,27 @@ def query():
 
    return '''<h1>The surname value is: {}</h1>'''.format(surname)
 
-#TODO EXAMPLE
-@app.rout('/cats', methods=['GET', 'POST'])
-def cat_request():
+#TODO EXAMPLE OF HOW TO CALL VIOLETTA's methods from db_service class
+#And parse data from json
+@app.route('/patients', methods=['GET', 'POST'])
+def patients_request():
    if request.method =='POST':
       body_data = request.json
-      return OK
+      patient_name = body_data['name']
+      patient_cont = body_data['contacts']
+      #insert patient
+      db_service.insert_patient(patient_name, patient_cont)
+      
+      return OK("inserted")
    else:
       body_data = request.json
-      cat_id = body_data['name']
-      #if no cats specified return all
-      return jsonify(db_service.get_cats())
-      #else return specific
-      return jsonify(db_service.get_cat(cat_id))
 
+      #EXAMPLE как сделать условие по возвращению всех 
+      #пациентов или только одного, если ключ name присутствует
+      if 'name' not in body_data:
+         return jsonify(db_service.get_cats())
+
+      return jsonify(db_service.get_patient(body_data['name']))
 
 @app.route('/success/<name>')
 def success(name):

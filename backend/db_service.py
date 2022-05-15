@@ -21,6 +21,17 @@ class DbService:
         db = flask_sqlalchemy.SQLAlchemy(app)
 
     #TODO define your methods here
-    #e.g. def InsertNewCat(cat)
-    #cat is the object of your model
-    
+    #e.g. def insert_patient(name, contacts)
+    #name, contacts is the columns of your table(model)
+    def insert_patient(name, contacts):
+        d
+
+    #TODO GET ALL PATIENTS FROM DB
+    def get_patients():
+        #TODO IMPLEMENT
+
+    #TODO SELECT PATIENT WHERE name
+    def get_patient_by_name(name):
+        #TODO IMPLEMENT
+
+    #МОжно сделать еще удаление или еще какие-то методы на свой выбор
