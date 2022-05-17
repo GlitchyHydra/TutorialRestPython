@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="title">{% block title %} Accomodations by patient {{ search_name }} {% endblock %}</h1>
+    <div class="content">
+        {% for accomodation in accomodations %}
+            <div class="patient">
+				<p><b>#{{ accomodation.id }}</b></p>
+				<p>Date: {{ accomodation.date }}</p>
+				
+				
+				<p><b> Ward#{{ accomodation.ward.id }}</b><p>
+				<p>Capacity: {{ accomodation.ward.capacity }}</p>
+				
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

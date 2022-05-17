@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 style="width: 100%">{% block title %} Write info about patient {% endblock %}</h1>
+    <form method="post">
+        <p>
+            <label for="name">Name</label>
+            <input type="text" name="name"
+                   placeholder="Your name">
+            </input>
+        </p>
+
+        <p>
+            <label for="email">Telephone Number</label>
+            <input type="email" name="contacts"
+                   placeholder="Your telephone number">
+            </input>
+        </p>
+
+        <p>
+            <label for="age">Age</label>
+            <input type="number" name="age"
+                   placeholder="Age">
+            </input>
+        </p>
+
+        <p>
+            <button type="submit">Submit</button>
+        </p>
+    </form>
+{% endblock %}

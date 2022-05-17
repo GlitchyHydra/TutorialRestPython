@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 style="width: 100%">{% block title %} Add a New Patient {% endblock %}</h1>
+    <form method="post">
+        <p>
+            <label for="name">First Name</label>
+            <input type="text" name="name"
+                   placeholder="Your name">
+            </input>
+        </p>
+
+        <p>
+            <label for="email">Telephone number</label>
+            <input type="text" name="contacts"
+                   placeholder="Your telephone number">
+            </input>
+        </p>
+
+        <p>
+            <label for="gender">Gender</label>
+			<input type="radio" name="gender" id="gender1" value="M"> Male </input><br>
+			<input type="radio" name="gender" id="gender2" value="F"> Female </input><br>
+        </p>
+
+        <p>
+            <button type="submit">Submit</button>
+        </p>
+    </form>
+{% endblock %}

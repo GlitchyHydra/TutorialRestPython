@@ -16,7 +16,7 @@
             flex-wrap: wrap;
         }
 
-        .student {
+        .patient {
             flex: 20%;
             padding: 10px;
             margin: 5px;
@@ -46,9 +46,8 @@
 </head>
 <body>
     <nav>
-        <a href="{{ url_for('index') }}">FlaskApp</a>
-        <a href="#">Create</a>
-        <a href="#">About</a>
+        <a href="{{ url_for('main') }}">Patients</a>
+        <a href="{{ url_for('patients_req') }}">Add Patient</a>
     </nav>
     <hr>
     <div class="content">

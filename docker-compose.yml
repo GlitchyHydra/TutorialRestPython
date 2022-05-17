@@ -19,6 +19,8 @@ services:
   web:
     container_name: tutorial_flask_backend
     image: glitchyhydra/sci_pyhon_tutorial_backend
+    depends_on:
+     - db
     build:
       #context is the path to Dockerfile for container
       context: .
@@ -42,14 +44,13 @@ services:
      - FLASK_URLS=https://+:8003;http://+:8002
      #parameters for use in flask app to connect with postgres server
      - DB_HOST=pdb
-     - DB_DATABASE=freelancer_bd
+     - DB_DATABASE=Patients_bd
      - DB_USER=postgres
      - DB_PASS=5690
      - DB_PORT=5432
      #additional
      - UPLOAD_FOLDER = "/downloads"
-    depends_on:
-     - db
+    
     networks:
      - freelancer-web-network
     command: ["./wait-for-it.sh", "db:5432", "--", "flask", "app.py"]

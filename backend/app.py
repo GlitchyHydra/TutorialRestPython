@@ -1,68 +1,43 @@
 from http.client import OK
-from flask import Flask,abort,render_template,request,redirect,url_for, jsonify
-import os
-from backend.models.Patient import Patient
-
-import init
+from flask import render_template,request,redirect,url_for, jsonify
+from app import app
 from db_service import DbService
 
-app = init.init_app()
-db_service = DbService(app)
+db_service = DbService()
 
-@app.route('/query')
-def query():
-   surname = request.args.get('surname')
+#main page after go to website
+@app.route('/')
+def main():
+   patients = db_service.get_patients()
+   return render_template('index.html', patients=patients)
 
-   return '''<h1>The surname value is: {}</h1>'''.format(surname)
+'''Get all patients or add new one'''
+@app.route('/patients/', methods=['GET', 'POST'])
+def patients_req():
 
-#TODO EXAMPLE OF HOW TO CALL VIOLETTA's methods from db_service class
-#And parse data from json
-@app.route('/patients', methods=['GET', 'POST'])
-def patients_request():
-   if request.method =='POST':
-      body_data = request.json
-      patient_name = body_data['name']
-      patient_cont = body_data['contacts']
-      #insert patient
-      db_service.insert_patient(patient_name, patient_cont)
-      
-      return OK("inserted")
-   else:
-      body_data = request.json
+   if request.method == 'GET':
+      return render_template('create_patient.html')
 
-      #EXAMPLE как сделать условие по возвращению всех 
-      #пациентов или только одного, если ключ name присутствует
-      if 'name' not in body_data:
-         return jsonify(db_service.get_cats())
+   data = request.form
 
-      return jsonify(db_service.get_patient(body_data['name']))
+   has_fields = ('name' in data) and ('gender' in data) and ('contacts' in data)
+   if (has_fields == False):
+      return "Not enough data were provided"
 
-@app.route('/success/<name>')
-def success(name):
-   return 'welcome, %s' % name
+   db_service.insert_patient(data['name'], data['gender'], data['contacts'])
 
-@app.route('/login',methods = ['POST', 'GET'])
-def login():
-   if request.method == 'POST':
-      user = request.form['nm']
-      return redirect(url_for('success',name = user))
-   else:
-      user = request.args.get('nm')
-      return redirect(url_for('success',name = user))
+   return redirect(url_for('main'))
 
+@app.route('/patients/<int:id>', methods=['POST'])
+def patient_by_name(id):
+   db_service.delete_patient_by_name(id)
+   return redirect(url_for('main'))
 
+@app.route('/accomodation/patients/<name>', methods=['GET'])
+def accomodation_by_patient_name(name):
+   accomodations = db_service.find_accommodation_by_patient_name(name)
 
-
-@app.route('/upload/',methods = ['GET','POST'])
-def upload_file():
-   if request.method =='POST':
-      file = request.files['file[]']
-      if file:
-         filename = file.filename
-         file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-         return "The file is uploaded"
-   return render_template('upload.html')
-
+   return render_template('accomodation.html', accomodations=accomodations, search_name=name)
 
 if __name__ == '__main__':
    app.run()
